@@ -1,0 +1,15 @@
+wwdc-network:
+    type: Article
+    author:  ["Mehta, Jiten", "Kinnear, Eric"]
+    title: Boost Performance and Security with Modern Networking
+    date: 2020-06-26
+    parent:
+        - type: Conference
+          title:
+              value: "{World Wide Developer Conference 2020}"
+              short: WWDC 2020
+          organization: Apple Inc.
+          location: Mountain View, CA
+        - type: Video
+          runtime: "00:13:42"
+          url: { value: https://developer.apple.com/videos/play/wwdc2020/10111/, date: 2020-09-17 }

@@ -74,7 +74,7 @@
         // Top of the title page
         #v(20pt)
         #align(center)[
-            #image("Assets/ktu.png", width: 2.46cm, height: 2.69cm)
+            #image("Assets/ktu-logo.png", width: 2.46cm, height: 2.69cm)
             #v(20pt)*Kauno technologijos universitetas*
             #v(0pt)Informatikos fakultetas
             #v(83pt)
@@ -135,5 +135,274 @@
             title: "Literatūros sąrašas",
             full: true
         ) 
+    ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// PRESENTATION
+#import "@preview/polylux:0.3.1": *
+
+// The margins are set automatically to 2.5/21 times the smaller dimension of the page. This results in 2.5cm margins for an A4 page.
+#let autoMarginSize = 2.5/21 * 7.50in
+#let margins = (
+    top: autoMarginSize,
+    right: autoMarginSize,
+    left: autoMarginSize,
+    bottom: autoMarginSize
+);
+
+#let ktu-theme(body) = {
+
+    set page(
+        fill: white,
+        numbering: "1",
+        number-align: right,
+        width: 13.33in,
+        height: 7.50in,
+        margin: margins,
+        footer: {
+            locate(loc => {
+                let page-counter = counter(page).display("1")
+                if loc.page() != 1 {
+                    place(bottom+right, dx: 18pt, dy: -20pt)[
+                        #set text(size: 14pt)
+                        *#page-counter*
+                    ]
+                }
+            })
+        }
+    )
+    
+    // Default content size
+    set text(size: 22pt, font: "Arial")
+
+    // First level heading size
+    show heading.where(level: 1): it => [
+        #set text(size: 50pt)
+        #it.body
+    ];
+
+    // Second level heading size
+    show heading.where(level: 2): it => [
+        #set text(size: 30pt)
+        #it.body
+    ];
+
+    // Embed the body
+    body
+}
+
+#let ktu-title-slide(body) = {
+    polylux-slide[
+        // Content
+        #set align(bottom)
+        #box(width: 80%)[
+            #body
+        ]
+
+
+        // Horizontal line
+        #place(
+            top,
+            dx: 222pt,
+            dy: -200pt,
+            pad(
+                right: -margins.right + 100pt,
+                left: -margins.left,
+                scale(
+                    x: 300%,
+                    rotate(
+                        -90deg,
+                        image("Assets/image12.svg") 
+                    )
+                )
+            )
+        )
+
+        // KTU logo
+        #place(
+            top,
+            dx: 792pt,
+            dy: -40pt,
+            image("Assets/ktu-logo.png", height: 36mm)
+        )
+
+        // Vertical line
+        #place(
+            top,
+            dx: 360pt,
+            dy: 385pt,
+            pad(
+                top: -margins.top,
+                bottom: -margins.bottom,
+                rotate(
+                    -90deg,
+                    scale(
+                        y: -100%,
+                        image("Assets/image15.svg")
+                    )
+                )
+            )
+        )
+
+        // Text on the vertical line side
+        #place(top, dx: 670pt, dy: 250pt)[
+            #set text(size: 15pt)
+            #rotate(-90deg)[
+                *UŽ KIEKVIENOS TECHNOLOGIJOS – ŽMOGUS*
+            ]
+        ]
+    ]
+}
+
+#let ktu-outline-slide(body) = {
+    polylux-slide[
+        // Content
+        #box(
+            pad(
+                left: 90pt,
+                body
+            )
+        )
+
+        // KTU logo
+        #place(
+            top,
+            //dx: 792pt,
+            dx: -50pt,
+            dy: -40pt,
+            image("Assets/ktu-logo.png", height: 36mm)
+        )
+
+        // Vertical line
+        #place(
+            top,
+            dx: -360pt,
+            dy: 385pt,
+            pad(
+                top: -margins.top,
+                bottom: -margins.bottom,
+                rotate(
+                    90deg,
+                    scale(
+                        y: -100%,
+                        x: -100%,
+                        image("Assets/image15.svg")
+                    )
+                )
+            )
+        )
+
+        // Text on the vertical line side
+        #place(top, dx: -170pt, dy: 250pt)[
+            #set text(size: 15pt)
+            #rotate(-90deg)[
+                *UŽ KIEKVIENOS TECHNOLOGIJOS – ŽMOGUS*
+            ]
+        ]
+    ]
+}
+
+#let ktu-main-slide(body) = {
+    let header = body.children.find(it => { return it.func() == heading })
+
+    polylux-slide[
+        // Content
+        #block(width: 95%, height: 100%)[
+            #header
+            #v(36pt)
+            #body.children.filter(it => {return it.func() != heading}).join()
+        ]
+
+        // DECORATIONS
+        // Horizontal line
+        #place(
+            top,
+            dy: 44pt,
+            pad(
+                right: -margins.right + 94pt,
+                left: -margins.left,
+                image("Assets/image15.svg") 
+            )
+        )
+
+        // KTU logo
+        #place(
+            top,
+            dx: 820pt,
+            dy: 0pt,
+            image("Assets/ktu-text.svg", height: 10mm)
+        )
+
+        // Vertical line
+        #place(
+            top,
+            dx: 800pt,
+            pad(
+                top: -margins.top,
+                bottom: -margins.bottom,
+                image("Assets/image12.svg")
+            )
+        )
+
+        // Text on the vertical line side
+        #place(top, dx: 700pt, dy: 250pt)[
+            #set text(size: 13pt)
+            #rotate(-90deg)[
+                *UŽ KIEKVIENOS TECHNOLOGIJOS – ŽMOGUS*
+            ]
+        ]
+    ]
+}
+
+#let ktu-no-vertical-slide(body) = {
+    let header = body.children.find(it => { return it.func() == heading })
+
+    polylux-slide[
+        // Content
+        #block(width: 95%, height: 100%)[
+            #header
+            #v(36pt)
+            #body.children.filter(it => {return it.func() != heading}).join()
+        ]
+
+        // DECORATIONS
+        // Horizontal line
+        #place(
+            top,
+            dy: 44pt,
+            pad(
+                right: -margins.right,
+                left: -margins.left,
+                image("Assets/image15.svg") 
+            )
+        )
+
+        // KTU logo
+        #place(
+            top,
+            dx: 820pt,
+            dy: 0pt,
+            image("Assets/ktu-text.svg", height: 10mm)
+        )
     ]
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg12"
+   height="6.8600001mm"
+   width="30.23mm"
+   version="1.0">
+  <metadata
+     id="metadata16">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs6">
+    <clipPath
+       id="clipEmfPath1"
+       clipPathUnits="userSpaceOnUse">
+      <path
+         id="path2"
+         d="  M 0,0   L 0,0   L 0,27.678928   L 115.9862,27.678928   L 115.9862,0 " />
+    </clipPath>
+    <pattern
+       y="0"
+       x="0"
+       height="6"
+       width="6"
+       patternUnits="userSpaceOnUse"
+       id="EMFhbasepattern" />
+  </defs>
+  <path
+     id="path8"
+     d="  M 1.0007437,13.338034   L 1.0007437,13.338034   L 1.0007437,13.338034   C 1.0007437,20.257766 6.5048342,25.873781 13.409966,25.873781   L 102.27601,25.873781   C 109.18114,25.873781 114.7853,20.257766 114.7853,13.338034   C 114.7853,6.4183022 109.18114,0.80228777 102.27601,0.80228777   L 13.409966,0.80228777   C 6.5048342,0.80228777 1.0007437,6.4183022 1.0007437,13.338034   z "
+     clip-path="url(#clipEmfPath1)"
+     style="fill:#000000;fill-rule:nonzero;fill-opacity:1;stroke:none;" />
+  <path
+     id="path10"
+     d="  M 1.0007437,13.338034   L 1.0007437,13.338034   L 1.0007437,13.338034   C 1.0007437,20.257766 6.5048342,25.873781 13.409966,25.873781   L 102.27601,25.873781   C 109.18114,25.873781 114.7853,20.257766 114.7853,13.338034   C 114.7853,6.4183022 109.18114,0.80228777 102.27601,0.80228777   L 13.409966,0.80228777   C 6.5048342,0.80228777 1.0007437,6.4183022 1.0007437,13.338034   L 1.0007437,13.338034   z "
+     clip-path="url(#clipEmfPath1)"
+     style="fill:none;stroke:#ffffff;stroke-width:2.0014875px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;" />
+</svg>
