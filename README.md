@@ -63,7 +63,7 @@ For presentations, we use the Polylux Typst package. I suggest that you consult 
 ```
 ### Options
 
-`#ktu-title-slide`
-`#ktu-outline-slide`
-`#ktu-main-slide`
-`#ktu-no-vertical-slide`
+- `#ktu-title-slide` for first, title slide
+- `#ktu-outline-slide` for second, outline slide
+- `#ktu-main-slide` main content slide
+- `#ktu-no-vertical-slide` main content slide without a vertical line on the right
