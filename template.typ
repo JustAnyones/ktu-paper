@@ -238,6 +238,24 @@
             )
         )
 
+        /*
+        #place(
+            top,
+            dx: 190pt,
+            //dy: -200pt,
+            dy: -88pt,
+            pad(
+                //right: -margins.right + 100pt,
+                //left: -margins.left,
+                scale(
+                    y: 10%,
+                    x: 10%,
+                    image("Assets/image4.svg") 
+                )
+            )
+        )
+        */
+
         // KTU logo
         #place(
             top,
