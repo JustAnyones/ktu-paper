@@ -397,7 +397,7 @@
 
     polylux-slide[
         // Content
-        #block(width: 95%, height: 100%)[
+        #block(width: 100%, height: 100%)[
             #header
             #v(36pt)
             #body.children.filter(it => {return it.func() != heading}).join()
@@ -407,7 +407,7 @@
         // Horizontal line
         #place(
             top,
-            dy: 44pt,
+            dy: 1.52cm,
             pad(
                 right: -margins.right,
                 left: -margins.left,
