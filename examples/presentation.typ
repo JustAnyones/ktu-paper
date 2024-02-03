@@ -6,10 +6,6 @@
 #show: everything => ktu-theme(everything)
 #show: codly-init.with()
 #codly(
-    languages: (
-        typst: (color: rgb("#CE412B")),
-    ),
-
     fill: luma(240),
     zebra-color: luma(240),
 
@@ -40,7 +36,7 @@
 #ktu-main-slide[
     == Įvadas
 
-    ...
+    #lorem(60)
 ]
 
 #ktu-main-slide[
@@ -98,4 +94,18 @@
         Iterator<E> descendingIterator();
     }
     ```
+
+    #only(2)[
+        #place(
+            top+left,
+            dx: 600pt, dy: 200pt
+        )[#pin("test")]
+
+        #pinit-point-from(
+            pin-dx: -240pt,
+            pin-dy: -90pt,
+            "test",
+            [Ką tai reiškia?]
+        )
+    ]
 ]
