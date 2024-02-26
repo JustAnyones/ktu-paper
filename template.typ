@@ -4,7 +4,8 @@
     subTitles,
     type: none,
     author: none,
-    recipient: none,
+    recipientRole: none,
+    recipients: none,
     document: none
 ) = {
 
@@ -62,6 +63,16 @@
         #it.body
     ];
 
+    // Setup figures
+    set figure.caption(separator: [.])
+    show figure.caption: it => [
+        #let supplement = it.supplement
+        #if it.kind == image {
+            supplement = "pav"
+        }
+        #it.counter.display(it.numbering) #supplement#it.separator #it.body
+    ]
+
     set heading(numbering: "1.")
 
     // Set bibliography and citing style
@@ -93,16 +104,22 @@
         ]
 
         // Written by and intended for
-        // TODO: support multiple authors and recipients
+        // TODO: support multiple authors
         #v(15pt)
         #align(left)[
             #h(300pt)*#author*
             #parbreak()
             #h(300pt)Studentas
-            #v(12pt);
-            #h(300pt)*#recipient*
+            #v(12pt)
+            #for recipientA in recipients {
+                [
+                    //#v(-5pt)
+                    #h(300pt)*#recipientA*
+                    #parbreak()
+                ]
+            }
             #parbreak()
-            #h(300pt)Dėstytojas
+            #h(300pt)#recipientRole
         ]
 
         // Footer of place where it was written and year
