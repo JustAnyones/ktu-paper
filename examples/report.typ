@@ -6,8 +6,12 @@
         [Technologinis projektas],
         [Typst šablonas]
     ),
-    author: "Vardenis Pavardenis",
-    recipient: "lekt. Petras Petraitis",
+    authors: ("Vardenis Pavardenis",),
+    recipients: (
+        "lekt. Petras Petraitis",
+    ),
+    authorRole: "Studentas",
+    recipientRole: "Dėstytojas",
     document: doc,
 )
 

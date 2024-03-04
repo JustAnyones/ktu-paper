@@ -17,8 +17,12 @@ The following is an example on how to apply the report style for a document
         [Technologinis projektas],
         [Typst šablonas]
     ),
-    author: "Vardenis Pavardenis",
-    recipient: "lekt. Petras Petraitis",
+    authors: ("Vardenis Pavardenis",),
+    recipients: (
+        "lekt. Petras Petraitis",
+    ),
+    authorRole: "Studentas",
+    recipientRole: "Dėstytojas",
     document: doc,
 )
 

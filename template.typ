@@ -3,9 +3,10 @@
     title,
     subTitles,
     type: none,
-    author: none,
-    recipientRole: none,
+    authors: none,
     recipients: none,
+    recipientRole: none,
+    authorRole: none,
     document: none
 ) = {
 
@@ -107,14 +108,19 @@
         // TODO: support multiple authors
         #v(15pt)
         #align(left)[
-            #h(300pt)*#author*
-            #parbreak()
-            #h(300pt)Studentas
-            #v(12pt)
-            #for recipientA in recipients {
+            #for author in authors {
                 [
                     //#v(-5pt)
-                    #h(300pt)*#recipientA*
+                    #h(300pt)*#author*
+                    #parbreak()
+                ]
+            }
+            #h(300pt)#authorRole
+            #v(12pt)
+            #for recipient in recipients {
+                [
+                    //#v(-5pt)
+                    #h(300pt)*#recipient*
                     #parbreak()
                 ]
             }
