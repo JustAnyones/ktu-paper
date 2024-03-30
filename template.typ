@@ -7,7 +7,7 @@
     recipients: none,
     recipientRole: none,
     authorRole: none,
-    document: none
+    body
 ) = {
 
     // Setup page properties
@@ -146,7 +146,7 @@
 
         #pagebreak()
 
-        #document
+        #body
   ]
 }
 

@@ -1,6 +1,6 @@
 #import "../template.typ": ataskaita, bibl
 
-#show: doc => ataskaita(
+#show: ataskaita.with(
     "Kompiuterinis raštingumas",
     (
         [Technologinis projektas],
@@ -11,8 +11,7 @@
         "lekt. Petras Petraitis",
     ),
     authorRole: "Studentas",
-    recipientRole: "Dėstytojas",
-    document: doc,
+    recipientRole: "Dėstytojas"
 )
 
 = Įvadas

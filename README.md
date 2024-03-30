@@ -11,7 +11,7 @@ The following is an example on how to apply the report style for a document
 ```typst
 #import "template.typ": ataskaita
 
-#show: doc => ataskaita(
+#show: ataskaita.with(
     "Kompiuterinis raštingumas",
     (
         [Technologinis projektas],
@@ -22,8 +22,7 @@ The following is an example on how to apply the report style for a document
         "lekt. Petras Petraitis",
     ),
     authorRole: "Studentas",
-    recipientRole: "Dėstytojas",
-    document: doc,
+    recipientRole: "Dėstytojas"
 )
 
 = Įvadas
