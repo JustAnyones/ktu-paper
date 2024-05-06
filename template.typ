@@ -1,4 +1,221 @@
-// A template function to create a stylised report
+// Laboratorinio darbo ataskaita
+//
+
+#let unnumbered-heading(text) = {
+    set heading(numbering: none)
+    [#text]
+}
+
+#let bibliography-list(path) = {
+    bibliography(
+        path,
+        title: "Literatūros sąrašas",
+        full: true
+    ) 
+}
+
+#let table-list() = {
+    outline(title: "Lentelių sąrašas", target: figure.where(kind: table))
+}
+
+#let picture-list() = {
+    outline(title: "Paveikslų sąrašas", target: figure.where(kind: image))
+}
+
+#let setup-page(body) = {
+    // Pagal formaliuosius rašto darbų reikalavimus
+
+
+    set page(
+        // Puslapio matmenys
+        paper: "a4",
+        width: 210mm,
+        height: 297mm,
+        
+        numbering: none,
+        number-align: right,
+
+        // paraščių dydžiai
+        margin: (
+            right: 10mm,
+            left: 30mm,
+            bottom: 20mm,
+            top: 20mm
+        )
+    )
+
+    // Bendrasis teksto šriftas 
+    set text(
+        font: "Times New Roman",
+        size: 12pt,
+        lang: "lt"
+        //style: "normal",
+        //weight: "regular",
+        //spacing: 200%
+    )
+
+    // TODO: investigate paragraphs
+
+
+    // Tarp eilučių paragrafe
+    set par(
+        leading: 1.15em,
+        justify: true
+    )
+
+    // Tarp paragrafų
+    show par: set block(spacing: 16pt)
+
+
+
+    // Nustatom visus paragrafus
+    // Įvadinei daliai, išvadoms, literatūros sąrašui ir priedams rašto darbo skyrių numeracija netaikoma.
+    show heading: it => [
+
+        #set align(left)
+        #set text(
+            font: "Times New Roman",
+            size: 12pt
+        )
+
+        // Automatically create a pagebreak before level 1 heading
+        #if it.level == 1 {
+            pagebreak()
+        }
+
+        // Jei numeracijos nėra, nustatom 
+        #if it.numbering == none {
+            set align(center)
+            [#it.body]
+        
+        // Jei numeracija yra, uždedam
+        } else {
+            set align(left)
+            [#counter(heading).display() #it.body]
+        }
+
+        #v(0.35cm)
+    ]
+
+    // Nustatom paveikslėlius ir figūras
+    set figure.caption(separator: [.])
+    show figure.caption: it => [
+        #let supplement = it.supplement
+        #if it.kind == image {
+            supplement = "pav"
+        } else if it.kind == table {
+            supplement = "lentelė"
+        } else {
+            supplement = [NESUKONFIGURUOTA!!! -- #it.kind]
+        }
+        *#it.counter.display(it.numbering) #supplement#it.separator* #it.body
+    ]
+
+    /*show table: it => [
+        #it.fields()
+        //#it
+    ]*/
+
+    show table.cell.where(y: 0): it => [
+        #set align(left)
+        #set text(size: 10pt)
+        *#it*
+    ]
+
+    show table.cell: it => [
+        #set align(left)
+        #set text(size: 10pt)
+        #it
+    ]
+
+    set heading(numbering: "1.")
+
+    // Set bibliography and citing style
+    set bibliography(style: "Assets/iso690-numeric-lt.csl")
+
+    body
+}
+
+#let lab-report(
+    title,
+    subTitles,
+    type: none,
+    authors: none,
+    recipients: none,
+    recipientRole: none,
+    authorRole: none,
+    body
+) = {
+    show: setup-page.with()
+
+    // Title page
+    [
+        // Top of the title page
+        #v(20pt)
+        #align(center)[
+            #image("Assets/ktu-logo.png", width: 2.46cm, height: 2.69cm)
+            #v(20pt)*Kauno technologijos universitetas*
+            #v(0pt)Informatikos fakultetas
+            #v(83pt)
+        ]
+
+        // The title page information
+        #align(center)[
+            #text(size: 18pt)[*#title*]
+            #for subTitle in subTitles {
+                [
+                    #v(-5pt)
+                    #text(size: 14pt)[#subTitle]
+                ]
+            }
+            #v(100pt)
+        ]
+
+        // Written by and intended for
+        // TODO: support multiple authors
+        #v(15pt)
+        #align(left)[
+            #for author in authors {
+                [
+                    //#v(-5pt)
+                    #h(300pt)*#author*
+                    #parbreak()
+                ]
+            }
+            #h(300pt)#authorRole
+            #v(12pt)
+            #for recipient in recipients {
+                [
+                    //#v(-5pt)
+                    #h(300pt)*#recipient*
+                    #parbreak()
+                ]
+            }
+            #parbreak()
+            #h(300pt)#recipientRole
+        ]
+
+        // Footer of place where it was written and year
+        #align(center+bottom)[
+            *Kaunas, #datetime.today().year()*
+        ]
+
+        // Begin numbering from the outline
+        #set page(
+            numbering: "1"
+        )
+
+        #outline(
+            title: "Turinys"
+        )
+
+        #body
+  ]
+}
+
+
+
+// A template function to create a stylized report
 #let ataskaita(
     title,
     subTitles,
@@ -32,7 +249,7 @@
     set par(
         leading: 6pt
     )
-
+    
     show: all => [
         #set text(
             font: "Times New Roman",
