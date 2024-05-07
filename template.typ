@@ -1,3 +1,5 @@
+#import "@preview/wrap-it:0.1.0": wrap-content
+
 // Laboratorinio darbo ataskaita
 //
 
@@ -7,11 +9,7 @@
 }
 
 #let bibliography-list(path) = {
-    bibliography(
-        path,
-        title: "Literatūros sąrašas",
-        full: true
-    ) 
+    bibliography(path, title: "Literatūros sąrašas", full: true) 
 }
 
 #let table-list() = {
@@ -58,44 +56,74 @@
 
 
     // Tarp eilučių paragrafe
+
+    // TODO: intervalas tarp eilučių is defined differently in Typst
+
     set par(
-        leading: 1.15em,
+        leading: 0.65em,
         justify: true
     )
 
+
     // Tarp paragrafų
-    show par: set block(spacing: 16pt)
+    set block(below: 10pt)
 
 
 
-    // Nustatom visus paragrafus
-    // Įvadinei daliai, išvadoms, literatūros sąrašui ir priedams rašto darbo skyrių numeracija netaikoma.
+    // Antraštės
     show heading: it => [
-
-        #set align(left)
-        #set text(
-            font: "Times New Roman",
-            size: 12pt
-        )
-
-        // Automatically create a pagebreak before level 1 heading
-        #if it.level == 1 {
-            pagebreak()
-        }
-
-        // Jei numeracijos nėra, nustatom 
-        #if it.numbering == none {
-            set align(center)
-            [#it.body]
         
-        // Jei numeracija yra, uždedam
-        } else {
-            set align(left)
-            [#counter(heading).display() #it.body]
+        // Align everything left
+        #set align(left)
+
+        // Visų antraščių teksto dydis vienodas
+        // Visų antraščių teksto šifras paryškintas
+        #set text(size: 12pt)
+
+        // TODO: intervalas tarp eilučių – 1,15 kiekvienai antraštei
+
+        // Antraštė be nr.
+        #if it.numbering == none {
+            // Rašoma naujame puslapyje
+            pagebreak()
+
+            // Centruota lygiuotė
+            set align(center)
+
+            // atstumas prieš ir po antraštės - 10 pt
+            v(10pt)
+            [#it.body]
+            v(10pt)
         }
 
-        #v(0.35cm)
+
+        // Skyrius
+        #if it.numbering != none and it.level == 1 {
+            // Rašoma naujame puslapyje
+            pagebreak()
+            
+            // abipusė lygiuotė
+            set par(justify: true)
+
+            // po antraštės - 10 pt
+            [#counter(heading).display() #it.body]
+            v(10pt)
+        }
+
+        // Poskyris ir skyrelis
+        #if it.numbering != none and it.level != 1 {
+            // abipusė lygiuotė
+            set par(justify: true)
+
+            // prieš ir po antraštės - 10 pt
+            v(10pt)
+            [#counter(heading).display() #it.body]
+            v(10pt)
+        }
     ]
+
+
+
 
     // Nustatom paveikslėlius ir figūras
     set figure.caption(separator: [.])
@@ -106,27 +134,38 @@
         } else if it.kind == table {
             supplement = "lentelė"
         } else {
-            supplement = [NESUKONFIGURUOTA!!! -- #it.kind]
+            supplement = [#it.kind]
         }
         *#it.counter.display(it.numbering) #supplement#it.separator* #it.body
     ]
 
-    /*show table: it => [
-        #it.fields()
-        //#it
-    ]*/
-
+    // Lentelės pirma eilutė
     show table.cell.where(y: 0): it => [
         #set align(left)
-        #set text(size: 10pt)
+        #set par(justify: false)
+        #set text(size: 10pt) // Šrifto dydis
+        #v(3pt)
+        // Paryškintas
         *#it*
+        #v(3pt)
     ]
 
     show table.cell: it => [
         #set align(left)
+        #set par(justify: false)
         #set text(size: 10pt)
+        #v(3pt)
         #it
+        #v(3pt)
     ]
+
+
+
+
+    show outline.where(target: figure.where(kind: image)): it => {
+        it.fields()
+    }
+
 
     set heading(numbering: "1.")
 
@@ -210,7 +249,7 @@
         )
 
         #body
-  ]
+    ]
 }
 
 
