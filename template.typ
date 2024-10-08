@@ -1,4 +1,5 @@
 #import "@preview/wrap-it:0.1.0": wrap-content
+#import "@preview/codly:1.0.0": codly, codly-init
 
 // Laboratorinio darbo ataskaita
 //
@@ -13,11 +14,23 @@
 }
 
 #let table-list() = {
-    outline(title: "Lentelių sąrašas", target: figure.where(kind: table))
+    outline(title: heading("Lentelių sąrašas", outlined: true), target: figure.where(kind: table))
 }
 
 #let picture-list() = {
-    outline(title: "Paveikslų sąrašas", target: figure.where(kind: image))
+    outline(title: heading("Paveikslų sąrašas", outlined: true), target: figure.where(kind: image))
+}
+
+#let setup-code(body) = {
+    show: codly-init.with()
+    codly(
+        fill: white,
+        zebra-fill: none,
+        stroke: none,
+        display-name: false,
+        display-icon: false,
+    )
+    body
 }
 
 #let setup-page(body) = {
@@ -46,7 +59,7 @@
     set text(
         font: "Times New Roman",
         size: 12pt,
-        lang: "lt"
+        lang: "lt",
         //style: "normal",
         //weight: "regular",
         //spacing: 200%
@@ -85,7 +98,7 @@
         // Antraštė be nr.
         #if it.numbering == none {
             // Rašoma naujame puslapyje
-            pagebreak()
+            //pagebreak()
 
             // Centruota lygiuotė
             set align(center)
@@ -100,7 +113,7 @@
         // Skyrius
         #if it.numbering != none and it.level == 1 {
             // Rašoma naujame puslapyje
-            pagebreak()
+            //pagebreak()
             
             // abipusė lygiuotė
             set par(justify: true)
@@ -160,18 +173,25 @@
     ]
 
 
+    // Code
+    show raw: set text(font: "Hack", spacing: 80%)
 
 
+    /*
     show outline.where(target: figure.where(kind: image)): it => {
         it.fields()
     }
+    */
 
+    // Use Lithuanian quotes
+    set smartquote(quotes: "„“")
 
     set heading(numbering: "1.")
 
     // Set bibliography and citing style
     set bibliography(style: "Assets/iso690-numeric-lt.csl")
 
+    // Return the body
     body
 }
 
@@ -190,17 +210,19 @@
     // Title page
     [
         // Top of the title page
-        #v(20pt)
+        #v(4pt)
         #align(center)[
             #image("Assets/ktu-logo.png", width: 2.46cm, height: 2.69cm)
-            #v(20pt)*Kauno technologijos universitetas*
-            #v(0pt)Informatikos fakultetas
-            #v(83pt)
+            #v(26pt)*Kauno technologijos universitetas*
+            #v(4pt)Informatikos fakultetas
+            #v(94pt)
         ]
 
         // The title page information
         #align(center)[
+            #set block(below: 16pt)
             #text(size: 18pt)[*#title*]
+            #v(4pt)
             #for subTitle in subTitles {
                 [
                     #v(-5pt)
@@ -245,8 +267,11 @@
         )
 
         #outline(
-            title: "Turinys"
+            title: "Turinys",
+            target: heading
         )
+
+        #pagebreak()
 
         #body
     ]
@@ -327,10 +352,17 @@
         #if it.kind == image {
             supplement = "pav"
         }
+        #if it.kind == table {
+            supplement = "lentelė"
+        }
         #it.counter.display(it.numbering) #supplement#it.separator #it.body
     ]
 
+    // Setup heading numbering
     set heading(numbering: "1.")
+
+    // Use Lithuanian quotes
+    set smartquote(quotes: "„“")
 
     // Set bibliography and citing style
     set bibliography(style: "Assets/iso690-numeric-lt.csl")
@@ -396,6 +428,7 @@
             numbering: "1"
         )
 
+        // Add an outline
         #outline(
             title: "Turinys"
         )
@@ -403,7 +436,7 @@
         #pagebreak()
 
         #body
-  ]
+    ]
 }
 
 // Bibliography shorthand

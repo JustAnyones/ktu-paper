@@ -1,4 +1,4 @@
-#import "../template.typ": lab-report, table-list, picture-list, bibliography-list, unnumbered-heading, bibl
+#import "../template.typ": lab-report, table-list, picture-list, bibliography-list, unnumbered-heading
 
 #show: lab-report.with(
     "Kompiuterinis raštingumas",
@@ -18,13 +18,19 @@
 
 #table-list()
 
+#pagebreak()
+
 #picture-list()
+
+#pagebreak()
 
 #unnumbered-heading[= Įvadas]
 
 Lorem ipsum dolor sit amet, eam ex decore persequeris, sit at illud lobortis atomorum. Sed dolorem quaerendum ne, prompta instructior ne pri. Et mel partiendo suscipiantur, docendi abhorreant ea sit. Recteque imperdiet eum te.
 
 Eu eum decore inimicus consetetur, cu usu habeo corpora intellegam. Ut antiopam efficiendi deterruisset sit. Mel sint eirmod id, qui quot virtute id, dolor nemore forensibus usu id. Fugit dolore voluptatum cu vim. An vix veniam graecis insolens, sit posse iusto id. Ut vim ceteros percipit, id quo ubique recusabo, eum sint lucilius ea. In sumo inani numquam has.
+
+#pagebreak()
 
 = Skyriaus pavadinimas
 
@@ -42,8 +48,10 @@ An vix veniam graecis insolens, sit posse iusto id. Ut vim ceteros percipit, id 
 Lorem ipsum dolor sit amet, eam ex decore persequeris, sit at illud lobortis atomorum. Sed dolorem quaerendum ne, prompta instructior ne pri. Et mel partiendo suscipiantur, docendi abhorreant ea sit. Recteque imperdiet eum te.
 
 // TODO: lentele
-
-#table(
+#[
+#show figure: set block(breakable: true)
+#figure(
+    table(
     columns: 5,
     table.header(
         [Stiliaus pavadinimas],
@@ -152,17 +160,10 @@ Lorem ipsum dolor sit amet, eam ex decore persequeris, sit at illud lobortis ato
     [Šrifto dydis 12 pt, intervalas tarp eilučių – 1,15, įtrauka – 0,64.],
     [Numeruotiems priedams.],
     [],
-    )
-
-// TODO: fix figure
-
-/*
-#figure(
-    ,
+    ),
     caption: "Pagrindiniai rašto darbo stiliai ir jų aprašymai"
-)*/
-
-
+)
+]
 
 Eu eum decore inimicus consetetur, cu usu habeo corpora intellegam. Ut antiopam efficiendi deterruisset sit. Mel sint eirmod id, qui quot virtute id, dolor nemore forensibus usu id. Fugit dolore voluptatum cu vim. An vix veniam graecis insolens, sit posse iusto id. Ut vim ceteros percipit, id quo ubique recusabo, eum sint lucilius ea. In sumo inani numquam has #footnote[Eu eum decore inimicus consetetur, cu usu habeo corpora intellegam. Ut antiopam efficiendi deterruisset sit. Mel sint eirmod id, qui quot virtute id, dolor nemore forensibus usu id.].
 
@@ -189,6 +190,7 @@ Lorem ipsum dolor sit amet, eam ex decore persequeris, sit at illud lobortis ato
 
 Eu eum decore inimicus consetetur, cu usu habeo corpora intellegam. Ut antiopam efficiendi deterruisset sit. Mel sint eirmod id, qui quot virtute id, dolor nemore forensibus usu id. Fugit dolore voluptatum cu vim. An vix veniam graecis insolens, sit posse iusto id. Ut vim ceteros percipit, id quo ubique recusabo, eum sint lucilius ea. In sumo inani numquam has.
 
+#pagebreak()
 
 = Skyriaus pavadinimas
 
@@ -230,6 +232,7 @@ Lorem ipsum dolor sit amet, eam ex decore persequeris, sit at illud lobortis ato
 
 Eu eum decore inimicus consetetur, cu usu habeo corpora intellegam. Ut antiopam efficiendi deterruisset sit. Mel sint eirmod id, qui quot virtute id, dolor nemore forensibus usu id. Fugit dolore voluptatum cu vim. An vix veniam graecis insolens, sit posse iusto id. Ut vim ceteros percipit, id quo ubique recusabo, eum sint lucilius ea. In sumo inani numquam has.
 
+#pagebreak()
 
 = Skyriaus pavadinimas
 
@@ -249,12 +252,15 @@ Lorem ipsum dolor sit amet, eam ex decore persequeris, sit at illud lobortis ato
 
 Eu eum decore inimicus consetetur, cu usu habeo corpora intellegam. Ut antiopam efficiendi deterruisset sit. Mel sint eirmod id, qui quot virtute id, dolor nemore forensibus usu id. Fugit dolore voluptatum cu vim. An vix veniam graecis insolens, sit posse iusto id. Ut vim ceteros percipit, id quo ubique recusabo, eum sint lucilius ea. In sumo inani numquam has.
 
+#pagebreak()
+
 #unnumbered-heading[= Išvados]
 
 1. Lorem ipsum dolor sit amet, eam ex decore persequeris, sit at illud lobortis atomorum. Sed dolorem quaerendum ne, prompta instructior ne pri. Et mel partiendo suscipiantur, docendi abhorreant ea sit. Recteque imperdiet eum te.
 
 2. Eu eum decore inimicus consetetur, cu usu habeo corpora intellegam. Ut antiopam efficiendi deterruisset sit. Mel sint eirmod id, qui quot virtute id, dolor nemore forensibus usu id. Fugit dolore voluptatum cu vim. An vix veniam graecis insolens, sit posse iusto id. Ut vim ceteros percipit, id quo ubique recusabo, eum sint lucilius ea. In sumo inani numquam has.
 
+#pagebreak()
 
 #bibliography-list("examples/bibl.yml")
 
