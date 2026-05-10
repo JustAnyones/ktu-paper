@@ -1,5 +1,4 @@
 #import "@local/ktu-paper:0.1.0": (
-  //lab-report, setup-code, set-table-head-size, TableCellSize,
   setup-page, setup-code, 
   ktu-table-of-contents, ktu-picture-list, ktu-table-list,
   ktu-heading-page-normal,
@@ -41,15 +40,11 @@
 = Sąrašai
 
 Vienas sąrašas:
-
-#set enum(indent: 12pt)
 1. Vienas;
 2. Du;
 3. Trys.
 
 Kitas sąrašas:
-
-#set list(indent: 12pt)
 - Vienas;
 - Du;
 - Trys.
