@@ -1,0 +1,13 @@
+[package]
+name = "ktu-paper"
+version = "0.1.0"
+compiler = "0.12.0"
+entrypoint = "src/lib.typ"
+repository = "https://git.svetikas.lt/JustAnyone/dotfiles"
+authors = ["Dominykas Svetikas <https://svetikas.lt>"]
+license = "MIT"
+description = "KTU report template to use for writing lab reports or final thesis."
+
+[template]
+path = "template"
+entrypoint = "main.typ"
