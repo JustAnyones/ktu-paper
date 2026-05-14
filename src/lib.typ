@@ -390,7 +390,7 @@
 
     // Set text font
     set text(
-        font: "Arial",
+        font: "Times New Roman",
         size: 12pt,
         lang: "lt",
         // Change where the bounding box is drawn for the text
