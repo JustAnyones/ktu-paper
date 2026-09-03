@@ -26,26 +26,6 @@
     [#text]
 }
 
-#let figureDefinitions = (
-    table: (
-        outlineFormat: (number) => [*#number lentelė.*],
-        captionFormat: (number) => [*#number lentelė.*],
-    ),
-)
-
-#let custom-figure(
-    kind,
-    caption: none,
-    body
-) = {
-    figure(
-        body,
-        kind: kind,
-        caption: caption,
-        supplement: "CUSTOM-FIGURE"
-    )
-}
-
 #let appendix-item(body) = {
     heading(
         metadata("appendix-heading") + "priedas. " + body,
@@ -549,27 +529,6 @@
             [*#context counter.display(caption.numbering) #supplement#separator* #caption.body]
         }
     }
-
-    // Lentelės pirma eilutė
-    /*
-    show table.cell.where(y: 0): it => context {
-        set align(left)
-        set par(justify: false)
-        set text(size: TableHeadSize.get()) // Šrifto dydis
-        v(3pt)
-        // Paryškintas
-        [*#it*]
-        v(3pt)
-    }
-
-    show table.cell: it => context {
-        set align(left)
-        set par(justify: false)
-        set text(size: TableCellSize.get())
-        v(3pt)
-        [#it]
-        v(3pt)
-    }*/
 
     // Set bibliography and citing style
     set bibliography(style: "assets/iso690-numeric-lt.csl")
