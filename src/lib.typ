@@ -4,6 +4,15 @@
     ktu-table,
     ktu-heading-page-centered, ktu-heading-page-normal, ktu-academic-honestly-declaration-page
 )
+#import "figures.typ": (
+    __fig-supplement,
+
+    __get-figure-number,
+    __get-locatable-element-number,
+
+    __format-ref,
+    __format-figure,
+)
 
 /**
  * Paruošta pagal "Rašto ..."
@@ -34,14 +43,6 @@
     )
 }
 
-// Stores localized names for various figure types
-#let figureNames = (
-    table: ("lentelė"),
-    image: ("pav"),
-    code: ("kodo frag"),
-    equation: ("lygtis"),
-)
-
 // Utility function to round numbers with padded zeros
 #let round-and-pad(number, decimals) = {
   let rounded = calc.round(number, digits: decimals)
@@ -69,17 +70,20 @@
   integer-part + padded-decimal
 }
 
-
 /// Returns a number for the given reference target.
 /// - target (label): Label to get the reference number for.
 #let ref-no(target) = context {
+    if type(target) != label {
+        panic("ref-no expects a label as input")
+    }
+
     let loc = locate(target)
     let elem = query(target)
     let item = elem.at(0)
     
     // If it's a figure, return the figure number
     if item.func() == figure {
-        link(loc, [#counter(figure.where(kind: item.kind)).at(loc).at(0)])
+        link(loc, [#__get-figure-number(item, loc)])
     } else if item.func() == heading {
         let fullValue = counter(heading).at(loc)
 
@@ -94,20 +98,6 @@
     } else {
         panic("referencing unknown type: ", item.func())
     }
-}
-
-#let __ref-no-element(element) = context {
-    // Ensure that we pass an element
-    if type(element) != content {
-        panic("can only reference elements of type content")
-    }
-    let loc = element.location()
-    let elem = query(loc)
-    let fig = elem.at(0)
-    if fig.func() != figure {
-        panic("referencing unknown type: " + fig.func())
-    }
-    fig.caption.counter.at(loc).at(0)
 }
 
 // Constructs a reference from multiple targets
@@ -167,7 +157,7 @@
     }
 
     collected.at(elementName).push(
-      (loc, fig.caption.counter.at(loc).at(0))
+      (loc, __get-figure-number(fig, loc))
     )
   }
 
@@ -232,7 +222,10 @@
         } else if (o.target == figure.where(kind: image)) {
             show outline.entry: it => link(
                 it.element.location(),
-                it.indented([*#__ref-no-element(it.element) #figureNames.image.*], [ #it.inner()], gap: 0pt),
+                it.indented(
+                    [*#__get-locatable-element-number(it.element) #__fig-supplement(image).*],
+                    [ #it.inner()], gap: 0pt
+                ),
             )
             o
 
@@ -240,7 +233,10 @@
         } else if (o.target == figure.where(kind: table)) {
             show outline.entry: it => link(
                 it.element.location(),
-                it.indented([*#__ref-no-element(it.element) #figureNames.table.*], [ #it.inner()], gap: 0pt),
+                it.indented(
+                    [*#__get-locatable-element-number(it.element) #__fig-supplement(table).*],
+                    [ #it.inner()], gap: 0pt
+                ),
             )
             o
 
@@ -248,7 +244,10 @@
         } else if (o.target == figure.where(kind: raw)) {
             show outline.entry: it => link(
                 it.element.location(),
-                it.indented([*#__ref-no-element(it.element) #figureNames.code.*], [ #it.inner()], gap: 0pt),
+                it.indented(
+                    [*#__get-locatable-element-number(it.element) #__fig-supplement(raw).*],
+                    [ #it.inner()], gap: 0pt
+                ),
             )
             o
 
@@ -266,25 +265,15 @@
 
             show outline.entry: it => link(
                 it.element.location(),
-                it.indented([*#__ref-no-element(it.element) unknown.*], it.inner(), gap: 0pt),
+                it.indented(
+                    [*#__get-locatable-element-number(it.element) unknown.*],
+                    it.inner(), gap: 0pt
+                ),
             )
             o
         }
     }
     outline(depth: depth, indent: indent, target: target, title: title)
-}
-
-#let func-to-name(func) = {
-    if func == table {
-        return "lentelė"
-    }
-    if func == image {
-        return "pav."
-    }
-    if func == grid {
-        return "pav."
-    }
-    return func
 }
 
 // Doesn't work in Typst 0.12.0 due to relative paths
@@ -439,7 +428,13 @@
         if it.numbering != none and it.level == 1 {
             // abipusė lygiuotė
             set par(justify: true)
-            //set align
+
+            // Reset figure counters if numbering per section is enabled
+            if __FIG_PER_SECTION.get() {
+                counter(figure.where(kind: image)).update(0)
+                counter(figure.where(kind: table)).update(0)
+                counter(figure.where(kind: raw)).update(0)
+            }
 
             // po antraštės - 10 pt
             block[#counter(heading).display() #it.body]
@@ -470,73 +465,15 @@
         }
     }
 
-    // Override references for equations
-    show ref: it => {
-        let el = it.element
+    // Reference style and numbering
+    show ref: it => __format-ref(it)
 
-        if el == none {
-            return it
-        }
+    // Figure captions and numbering
+    show figure: it => __format-figure(it)
 
-        // Override equation references
-        if el.func() == math.equation {
-            link(
-                el.location(),
-                numbering(el.numbering, ..counter(math.equation).at(el.location()))
-            )
-        // Override references to figures
-        } else if el.func() == figure {
-            let fig = el.body
-            let figType = fig.func()
-            link(el.location(), [
-                (žr. #numbering(el.numbering, ..counter(figure.where(kind: figType)).at(el.location())) #func-to-name(figType))
-            ])
-        } else {
-            it
-        }
-    }
-
-    // Change captions for figures
-    show figure: it => {
-        let separator = [.]
-        let caption = it.caption
-
-        // If caption is not provided, just show the figure body
-        if caption == none {
-            it.body
-            return
-        }
-
-        let counter = caption.counter  
-        let supplement = caption.supplement
-
-        if it.body.func() == math.equation {
-            supplement = figureNames.equation
-        } else if it.kind == image {
-            supplement = figureNames.image
-        } else if it.kind == table {
-            supplement = figureNames.table
-        } else if it.kind == raw {
-            supplement = figureNames.code
-        }
-
-
-        // Tables have captions at the top
-        set text(size: 11pt)
-        if it.kind == table {
-            {set align(left)
-            [*#context counter.display(caption.numbering) #supplement#separator* #caption.body]}
-            it.body
-        } else {
-            it.body
-            [*#context counter.display(caption.numbering) #supplement#separator* #caption.body]
-        }
-    }
-
-    // Set bibliography and citing style
+    // Bibliography citing style
     set bibliography(style: "assets/iso690-numeric-lt.csl")
 
-    // Return the body
     body
 }
 
@@ -549,6 +486,6 @@
     body
 ) =  context {
     show: setup-page.with(font: font)
-    __FIG_PER_SECTION.update(true)
+    __FIG_PER_SECTION.update(figureNumberingPerSection)
     body
 }
