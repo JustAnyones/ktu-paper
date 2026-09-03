@@ -1,5 +1,5 @@
-#import "@local/ktu-paper:0.1.0": (
-  setup-page, setup-code, 
+#import "@local/ktu-paper:0.2.0": (
+  ktu-paper, setup-code,
   ktu-table-of-contents, ktu-picture-list, ktu-table-list,
   ktu-heading-page-normal,
   ktu-table,
@@ -7,7 +7,9 @@
   custom-ref, ref-no
 )
 
-#show: setup-page.with()
+#show: ktu-paper.with(
+  font: "Times New Roman",
+)
 #show: setup-code.with()
 
 #show figure: it => {
