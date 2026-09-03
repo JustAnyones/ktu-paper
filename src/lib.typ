@@ -361,7 +361,7 @@
     body
 }
 
-#let __page_rules(body) = {
+#let __page_rules(font: "Times New Roman", body) = {
     // Page size and margins
     set page(
         paper: "a4",
@@ -390,7 +390,7 @@
 
     // Set text font
     set text(
-        font: "Times New Roman",
+        font: font,
         size: 12pt,
         lang: "lt",
         // Change where the bounding box is drawn for the text
@@ -411,8 +411,8 @@
     body
 }
 
-#let setup-page(body) = {
-    show: __page_rules.with()
+#let setup-page(font: "Times New Roman", body) = {
+    show: __page_rules.with(font: font)
 
     // Pagal formaliuosius rašto darbų reikalavimus
 
