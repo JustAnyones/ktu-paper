@@ -1,5 +1,5 @@
 #import "@preview/codly:1.3.0": codly, codly-init
-#import "config.typ": debug-author-table, enable-heading-experiment, __HEADING_EXPERIMENT
+#import "config.typ": debug-author-table, enable-heading-experiment, __HEADING_EXPERIMENT, __FIG_PER_SECTION
 #import "fragments.typ": (
     ktu-table,
     ktu-heading-page-centered, ktu-heading-page-normal, ktu-academic-honestly-declaration-page
@@ -391,7 +391,10 @@
     body
 }
 
-#let setup-page(font: "Times New Roman", body) = {
+#let setup-page(
+    font: "Times New Roman",
+    body
+) = {
     show: __page_rules.with(font: font)
 
     // Pagal formaliuosius rašto darbų reikalavimus
@@ -537,3 +540,15 @@
     body
 }
 
+/// Configure the template for a KTU paper.
+/// - font (str): Font to use for the paper.
+/// - figureNumberingPerSection (bool): Whether to number figures per section rather than globally.
+#let ktu-paper(
+    font: "Times New Roman",
+    figureNumberingPerSection: false,
+    body
+) =  context {
+    show: setup-page.with(font: font)
+    __FIG_PER_SECTION.update(true)
+    body
+}
