@@ -39,7 +39,7 @@
 
 /// Helper function to resolve figure numbers (either global "1" or section-based "1.1").
 /// It takes a figure item and referenced location and returns the appropriate number as a string.
-#let __get-figure-number(fig-item, loc) = context {
+#let __get-figure-number(fig-item, loc) = {
     if type(fig-item) != content {
         panic("can only get figure number for content elements")
     }
@@ -48,17 +48,17 @@
         panic("can only get figure number for figure elements")
     }
 
-    let perSection = __FIG_PER_SECTION.get()
+    let perSection = __FIG_PER_SECTION.at(loc)
     if perSection {
         let chapter = counter(heading).at(loc).at(0, default: 0)
         let figNum = counter(figure.where(kind: fig-item.kind)).at(loc).at(0, default: 1)
-        [#chapter.#figNum]
+        str(chapter) + "." + str(figNum)
     } else {
         let caption = fig-item.caption
         if caption != none and caption.numbering != none {
-            caption.counter.at(loc).at(0)
+            str(caption.counter.at(loc).at(0))
         } else {
-            [#counter(figure.where(kind: fig-item.kind)).at(loc).at(0)]
+            str(counter(figure.where(kind: fig-item.kind)).at(loc).at(0))
         }
     }
 }
@@ -124,12 +124,14 @@
     }
     set text(size: 11pt)
 
+    let fig-num = context __get-figure-number(it, here())
+
     // Tables have captions at the top
     if it.kind == table {
-        align(left)[*#__get-figure-number(it, here()) #supplement#separator* #caption.body]
+        align(left)[*#fig-num #supplement#separator* #caption.body]
         it.body
     } else {
         it.body
-        [*#__get-figure-number(it, here()) #supplement#separator* #caption.body]
+        align(center)[*#fig-num #supplement#separator* #caption.body]
     }
 }
