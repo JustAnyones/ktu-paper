@@ -1,5 +1,5 @@
 #import "@preview/codly:1.3.0": codly, codly-init
-#import "config.typ": debug-author-table, enable-heading-experiment, __HEADING_EXPERIMENT, __FIG_PER_SECTION
+#import "config.typ": debug-author-table, enable-heading-experiment, __HEADING_EXPERIMENT, __FIG_PER_SECTION, __UPPERCASE_SECTION_TITLES
 #import "fragments.typ": (
     ktu-table,
     ktu-heading-page-centered, ktu-heading-page-normal, ktu-academic-honestly-declaration-page
@@ -192,6 +192,9 @@
     show outline: o => context {
         // If it's a heading, show the default outline with bold text
         if (o.target == selector(heading)) {
+            // Determine whether to uppercase section titles based on the global setting
+            let isUpper = __UPPERCASE_SECTION_TITLES.get()
+
             // Define known target widths based on KTU template
             let targets = (0.64cm, 0.96cm, 1.28cm, 1.6cm, 1.92cm)
             
@@ -207,9 +210,25 @@
                     target = 0.64cm
                 }
                 let newGap = target - measurement.width
+
+                // Uppercase body if need be
+                let bodyContent = it.element.body
+                if isUpper and (it.level == 1 or it.element.numbering == none) {
+                    bodyContent = upper(bodyContent)
+                }
+
+                // Reconstruct the it.inner content with the new body
+                let formattedInner = {
+                    bodyContent
+                    [ ] // whitespace is required for backwards compat
+                    box(width: 1fr, it.fill)
+                    [ ] // whitespace is required for backwards compat
+                    it.page()
+                }
+
                 link(
                     it.element.location(),
-                    it.indented(prefixContent, it.inner(), gap: newGap),
+                    it.indented(prefixContent, formattedInner, gap: newGap),
                 )
             }
 
@@ -382,6 +401,8 @@
 
 #let setup-page(
     font: "Times New Roman",
+    uppercaseSectionTitles: false,
+    unnumberedHeadingAlignment: center,
     body
 ) = {
     show: __page_rules.with(font: font)
@@ -395,6 +416,14 @@
     // Teksto lygiuotė, abipusė
     set par(justify: true)
     set linebreak(justify: true)
+
+    let maybe-uppercase(body) = {
+        if uppercaseSectionTitles {
+            upper(body)
+        } else {
+            body
+        }
+    }
 
     // Antraštės
     // Force them into blocks so they don't count as paragraphs
@@ -413,11 +442,11 @@
 
         // Antraštė be nr.
         if it.numbering == none {
-            // Centruota lygiuotė
-            set align(center)
+            // Centruota lygiuotė by default, but can be overridden by the user
+            set align(unnumberedHeadingAlignment)
 
             // atstumas prieš ir po antraštės - 10 pt
-            block[#it.body]
+            block[#maybe-uppercase(it.body)]
             if useExperiment {
                 v(10pt)
             }
@@ -437,7 +466,7 @@
             }
 
             // po antraštės - 10 pt
-            block[#counter(heading).display() #it.body]
+            block[#counter(heading).display() #maybe-uppercase(it.body)]
             if useExperiment {
                 v(10pt)
             }
@@ -478,14 +507,26 @@
 }
 
 /// Configure the template for a KTU paper.
-/// - font (str): Font to use for the paper.
+/// - font (str): Text font to use for the paper.
 /// - figureNumberingPerSection (bool): Whether to number figures per section rather than globally.
+/// - uppercaseSectionTitles (bool): Whether to uppercase section titles.
+/// - unnumberedHeadingAlignment (alignment): Alignment for unnumbered headings.
 #let ktu-paper(
     font: "Times New Roman",
     figureNumberingPerSection: false,
+    // Not sure about formal conformity of deviating
+    // from the defaults of the next options,
+    // but some modules may require them
+    uppercaseSectionTitles: false,
+    unnumberedHeadingAlignment: center,
     body
 ) =  context {
-    show: setup-page.with(font: font)
+    show: setup-page.with(
+        font: font,
+        uppercaseSectionTitles: uppercaseSectionTitles,
+        unnumberedHeadingAlignment: unnumberedHeadingAlignment,
+    )
     __FIG_PER_SECTION.update(figureNumberingPerSection)
+    __UPPERCASE_SECTION_TITLES.update(uppercaseSectionTitles)
     body
 }

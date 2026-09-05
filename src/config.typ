@@ -6,6 +6,11 @@
 /// Appendix and other non-standard sections.
 #let __FIG_PER_SECTION = state("svetikas.lt/ktu-paper/figure-numbering-per-section", false)
 
+/// Whether to uppercase section titles or not.
+/// If true, section titles will be uppercased.
+/// If false, section titles will be displayed as-is.
+#let __UPPERCASE_SECTION_TITLES = state("svetikas.lt/ktu-paper/uppercase-section-titles", false)
+
 #let __DEBUG_AUTHOR_TABLE = state("$ktu-template-DEBUG_AUTHOR_TABLE", false)
 #let debug-author-table() = {
     __DEBUG_AUTHOR_TABLE.update(true)
